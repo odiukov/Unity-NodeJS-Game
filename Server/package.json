@@ -1,0 +1,16 @@
+{
+  "name": "node-js-server",
+  "version": "0.0.1",
+  "description": "Server for game",
+  "engines": {
+    "node": "4.4.4"
+  },
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "4.13.4",
+    "socket.io": "1.4.6"
+  }
+}
