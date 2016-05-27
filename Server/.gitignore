@@ -11,6 +11,8 @@ pids
 logs
 results
 .vscode
+*.d.ts
+/typings
 
 node_modules
 npm-debug.log
