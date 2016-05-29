@@ -6,7 +6,7 @@ using SocketIO;
 public class Network : MonoBehaviour
 {
 
-    SocketIOComponent socket;
+    static SocketIOComponent socket;
     public GameObject currentPlayer;
     public Spawner spawner;
     // Use this for initialization
@@ -18,15 +18,41 @@ public class Network : MonoBehaviour
         socket.On("spawn", OnSpawn);
         socket.On("move", OnMove);
         socket.On("follow", OnFollow);
-        socket.On("disconnected", OnDisconnected);
         socket.On("requestPosition", OnRequestPosition);
         socket.On("updatePosition", OnUpdatePosition);
+        socket.On("disconnected", OnDisconnected);
+    }
+    
+    private void OnConnected(SocketIOEvent obj)
+    {
+        Debug.Log("conected");
     }
 
     private void OnRegister(SocketIOEvent obj)
     {
         Debug.Log("registered id = " + obj.data);
         spawner.AddPlayer(obj.data["id"].str, currentPlayer);
+    }
+    
+    private void OnSpawn(SocketIOEvent obj)
+    {
+
+        Debug.Log("Spawn " + obj.data);
+        var player = spawner.SpawnPlayer(obj.data["id"].str);
+        if (obj.data["x"])
+        {
+            var movePosition = GetVectorFromJson(obj);
+            var navPos = player.GetComponent<Navigator>();
+            navPos.NavigateTo(movePosition);
+        }
+    }
+
+    private void OnMove(SocketIOEvent obj)
+    {
+        var position = GetVectorFromJson(obj);
+        var player = spawner.GetPlayer(obj.data["id"].str);
+        var navPos = player.GetComponent<Navigator>();
+        navPos.NavigateTo(position);
     }
 
     private void OnFollow(SocketIOEvent obj)
@@ -40,14 +66,14 @@ public class Network : MonoBehaviour
 
     private void OnUpdatePosition(SocketIOEvent obj)
     {
-        var position = new Vector3(GetFloatFromJson(obj.data, "x"), 0, GetFloatFromJson(obj.data, "y"));
+        var position = GetVectorFromJson(obj);
         var player = spawner.GetPlayer(obj.data["id"].str);
         player.transform.position = position;
     }
 
     private void OnRequestPosition(SocketIOEvent obj)
     {
-        socket.Emit("updatePosition", new JSONObject(VectorToJson(currentPlayer.transform.position)));
+        socket.Emit("updatePosition", VectorToJson(currentPlayer.transform.position));
     }
 
     private void OnDisconnected(SocketIOEvent obj)
@@ -55,45 +81,36 @@ public class Network : MonoBehaviour
         var disconnectedId = obj.data["id"].str;
         spawner.Remove(disconnectedId);
     }
-
-    private void OnMove(SocketIOEvent obj)
-    {
-        var position = new Vector3(GetFloatFromJson(obj.data, "x"), 0, GetFloatFromJson(obj.data, "y"));
-        var player = spawner.GetPlayer(obj.data["id"].str);
-        var navPos = player.GetComponent<Navigator>();
-        navPos.NavigateTo(position);
-        
-    }
-
-    private void OnSpawn(SocketIOEvent obj)
-    {
-
-        Debug.Log("Spawn " + obj.data);
-        var player = spawner.SpawnPlayer(obj.data["id"].str);
-        if (obj.data["x"])
-        {
-            var movePosition = new Vector3(GetFloatFromJson(obj.data, "x"), 0, GetFloatFromJson(obj.data, "y"));
-            var navPos = player.GetComponent<Navigator>();
-            navPos.NavigateTo(movePosition);
-        }
-    }
-
-    private void OnConnected(SocketIOEvent obj)
-    {
-        Debug.Log("conected");
-    }
     
-    float GetFloatFromJson(JSONObject data, string key){
-        return float.Parse(data[key].str);
+    private static Vector3 GetVectorFromJson(SocketIOEvent obj)
+    {
+        return new Vector3(obj.data["x"].n, 0, obj.data["y"].n);
     }
 
-    public static string VectorToJson(Vector3 vector)
+    public static JSONObject VectorToJson(Vector3 vector)
     {
-        return String.Format(@"{{""x"":""{0}"", ""y"":""{1}""}}", vector.x, vector.z);
+        JSONObject jsonObject = new JSONObject(JSONObject.Type.OBJECT);
+        jsonObject.AddField("x", vector.x);
+        jsonObject.AddField("y", vector.z);
+        return jsonObject;
     }
 
-    public static string PlayerIdToJson(string id)
+    public static JSONObject PlayerIdToJson(string id)
     {
-        return String.Format(@"{{""targetId"":""{0}""}}", id);
+        JSONObject jsonObject = new JSONObject(JSONObject.Type.OBJECT);
+        jsonObject.AddField("targetId", id);
+        return jsonObject;
+    }
+
+    public static void Move(Vector3 position)
+    {
+        Debug.Log("send moving to node " + Network.VectorToJson(position));
+        socket.Emit("move", Network.VectorToJson(position));
+    }
+
+    public static void Follow(string id)
+    {
+        Debug.Log("send follow player id " + Network.PlayerIdToJson(id));
+        socket.Emit("follow", Network.PlayerIdToJson(id));
     }
 }

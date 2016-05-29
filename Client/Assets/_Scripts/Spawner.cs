@@ -15,7 +15,6 @@ public class Spawner : MonoBehaviour {
     {
         var player = Instantiate(networkPlayer, Vector3.zero, Quaternion.identity) as GameObject;
         player.GetComponent<ClickToFollow>().currentPlayerFollower = currentPlayer.GetComponent<Follower>();
-        player.GetComponent<NetworkFollow>().socket = socket;
         player.GetComponent<NetworkEntity>().id = id;
         AddPlayer(id, player);
         return player;

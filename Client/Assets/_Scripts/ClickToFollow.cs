@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 public class ClickToFollow : MonoBehaviour, IClickable
 {
@@ -12,9 +11,7 @@ public class ClickToFollow : MonoBehaviour, IClickable
     public void OnClick(RaycastHit hit)
     {
         Debug.Log("follow " + hit.collider.gameObject.name);
-        NetworkFollow networkFollow = GetComponent<NetworkFollow>();
-        Debug.Log(networkFollow);
-        GetComponent<NetworkFollow>().OnFollow(networkEntity.id);
+        Network.Follow(networkEntity.id);
         currentPlayerFollower.target = transform;
     }
 
