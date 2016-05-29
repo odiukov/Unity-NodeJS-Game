@@ -10,7 +10,7 @@ public class NetworkMove : MonoBehaviour {
 
     public void OnMove(Vector3 position)
     {
-        Debug.Log("send to node " + Network.VectorToJson(position));
+        Debug.Log("send moving to node " + Network.VectorToJson(position));
         socket.Emit("move", new JSONObject(Network.VectorToJson(position)));
     }
 }

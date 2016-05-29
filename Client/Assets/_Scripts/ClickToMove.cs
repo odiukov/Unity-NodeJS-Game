@@ -1,21 +1,21 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class ClickToMove : MonoBehaviour
+public class ClickToMove : MonoBehaviour, IClickable
 {
 
     public GameObject player;
-    private NavigatePosition playerNavigatePosition;
+    private Navigator playerNavigator;
     private NetworkMove networkMove;
 	void Start ()
 	{
-	    playerNavigatePosition = player.GetComponent<NavigatePosition>();
+	    playerNavigator = player.GetComponent<Navigator>();
 	    networkMove = player.GetComponent<NetworkMove>();
-
 	}
-	
-	public void OnClick (Vector3 position) {
-	    playerNavigatePosition.NavigateTo(position);
-        networkMove.OnMove(position);
+
+    public void OnClick(RaycastHit hit)
+    {
+        playerNavigator.NavigateTo(hit.point);
+        networkMove.OnMove(hit.point);
     }
 }
