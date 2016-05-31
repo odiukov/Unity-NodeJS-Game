@@ -51,6 +51,12 @@ io.on('connection', function (socket) {
         socket.broadcast.emit('updatePosition', data);
     });
     
+    socket.on('attack', function (data) {
+        console.log("attack request: ", data);
+        data.id = thisPlayerId;
+        io.emit('attack', data);
+    });
+    
     socket.on('disconnect', function () {
         console.log('client disconected');
         delete players[thisPlayerId];

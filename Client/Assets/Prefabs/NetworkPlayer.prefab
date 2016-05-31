@@ -286,6 +286,9 @@ GameObject:
   - 136: {fileID: 13612592}
   - 114: {fileID: 11427960}
   - 114: {fileID: 11445090}
+  - 114: {fileID: 11444524}
+  - 114: {fileID: 11468096}
+  - 114: {fileID: 11477264}
   m_Layer: 0
   m_Name: NetworkPlayer
   m_TagString: Untagged
@@ -651,7 +654,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3573d8f1b87a5a34f9d86d0860f3a68c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentPlayerFollower: {fileID: 0}
+  currentPlayer: {fileID: 0}
 --- !u!114 &11427960
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -675,6 +678,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a38f125a59282cc4f81654a0df344a32, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &11444524
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 155874}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8ce009d883aa29646a91f8358c101cdb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  target: {fileID: 0}
 --- !u!114 &11445090
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -686,9 +701,34 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 96bb66b8cfa6af44eb96d608977a403a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  target: {fileID: 0}
+  targeter: {fileID: 0}
   scanFrequency: 0.5
   stopFollowDistance: 2
+--- !u!114 &11468096
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 155874}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0292da0e9bb703d40a4319fedff5f13b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  attackDistance: 1
+  attackRate: 2
+--- !u!114 &11477264
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 155874}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ad93d075174e4c44b901fa05ca9c4dcb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  health: 100
 --- !u!136 &13612592
 CapsuleCollider:
   m_ObjectHideFlags: 1

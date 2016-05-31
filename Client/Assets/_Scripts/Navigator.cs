@@ -5,12 +5,12 @@ public class Navigator : MonoBehaviour {
 
     private NavMeshAgent agent;
     private Animator animator;
-    private Follower follower;
+	private Targeter targeter;
     
 	void Awake () {
 	    agent = GetComponent<NavMeshAgent>();
 	    animator = GetComponent<Animator>();
-	    follower = GetComponent<Follower>();
+		targeter = GetComponent<Targeter>();
 
 	}
 
@@ -22,6 +22,6 @@ public class Navigator : MonoBehaviour {
 	public void NavigateTo (Vector3 position)
 	{
 	    agent.SetDestination(position);
-	    follower.target = null;
+		targeter.target = null;
 	}
 }

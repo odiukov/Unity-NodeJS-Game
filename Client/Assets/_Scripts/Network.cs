@@ -20,6 +20,7 @@ public class Network : MonoBehaviour
         socket.On("follow", OnFollow);
         socket.On("requestPosition", OnRequestPosition);
         socket.On("updatePosition", OnUpdatePosition);
+		socket.On("attack", OnAttack);
         socket.On("disconnected", OnDisconnected);
     }
     
@@ -59,9 +60,9 @@ public class Network : MonoBehaviour
     {
         Debug.Log("follow request " + obj.data);
         var player = spawner.GetPlayer(obj.data["id"].str);
-        var target = spawner.GetPlayer(obj.data["targetId"].str);
-        var follower = player.GetComponent<Follower>();
-        follower.target = target.transform;
+		var targetTransform = spawner.GetPlayer(obj.data["targetId"].str).transform;
+		var target = player.GetComponent<Targeter>();
+		target.target = targetTransform;
     }
 
     private void OnUpdatePosition(SocketIOEvent obj)
@@ -75,6 +76,13 @@ public class Network : MonoBehaviour
     {
         socket.Emit("updatePosition", VectorToJson(currentPlayer.transform.position));
     }
+
+	void OnAttack (SocketIOEvent obj)
+	{
+		Debug.Log("received attack " + obj.data);
+		var targetPlayer = spawner.GetPlayer(obj.data["targetId"].str);
+		targetPlayer.GetComponent<Hittable> ().GetHit(10f);
+	}
 
     private void OnDisconnected(SocketIOEvent obj)
     {
@@ -113,4 +121,10 @@ public class Network : MonoBehaviour
         Debug.Log("send follow player id " + Network.PlayerIdToJson(id));
         socket.Emit("follow", Network.PlayerIdToJson(id));
     }
+
+	public static void Attack(string targetId)
+	{
+		Debug.Log("attacking player id " + Network.PlayerIdToJson(targetId));
+		socket.Emit("attack", Network.PlayerIdToJson(targetId));
+	}
 }
