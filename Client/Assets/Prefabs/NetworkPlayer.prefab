@@ -715,7 +715,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0292da0e9bb703d40a4319fedff5f13b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attackDistance: 1
+  attackDistance: 1.5
   attackRate: 2
 --- !u!114 &11477264
 MonoBehaviour:
@@ -728,7 +728,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad93d075174e4c44b901fa05ca9c4dcb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 100
+  health: 40
+  respawnTime: 5
 --- !u!136 &13612592
 CapsuleCollider:
   m_ObjectHideFlags: 1
@@ -807,7 +808,7 @@ NavMeshAgent:
   m_GameObject: {fileID: 155874}
   m_Enabled: 1
   m_Radius: 0.5
-  m_Speed: 3.5
+  m_Speed: 3
   m_Acceleration: 50
   avoidancePriority: 50
   m_AngularSpeed: 2000

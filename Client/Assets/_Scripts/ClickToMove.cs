@@ -13,6 +13,6 @@ public class ClickToMove : MonoBehaviour, IClickable
     public void OnClick(RaycastHit hit)
     {
         playerNavigator.NavigateTo(hit.point);
-        Network.Move(hit.point);
+		Network.Move(player.transform.position, hit.point);
     }
 }

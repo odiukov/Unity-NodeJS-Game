@@ -33,6 +33,7 @@ public class Network : MonoBehaviour
     {
         Debug.Log("registered id = " + obj.data);
         spawner.AddPlayer(obj.data["id"].str, currentPlayer);
+		currentPlayer.GetComponent<NetworkEntity> ().id = obj.data ["id"].str;
     }
     
     private void OnSpawn(SocketIOEvent obj)
@@ -114,10 +115,14 @@ public class Network : MonoBehaviour
         return jsonObject;
     }
 
-    public static void Move(Vector3 position)
+    public static void Move(Vector3 current, Vector3 destionation)
     {
-        Debug.Log("send moving to node " + Network.VectorToJson(position));
-        socket.Emit("move", Network.VectorToJson(position));
+		Debug.Log("send moving to node " + Network.VectorToJson(destionation));
+
+		JSONObject jsonObject = new JSONObject(JSONObject.Type.OBJECT);
+		jsonObject.AddField("c", Network.VectorToJson(current));
+		jsonObject.AddField("d", Network.VectorToJson(destionation));
+		socket.Emit("move", jsonObject);
     }
 
     public static void Follow(string id)

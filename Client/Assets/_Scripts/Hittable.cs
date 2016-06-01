@@ -3,9 +3,9 @@ using System.Collections;
 
 public class Hittable : MonoBehaviour {
 
-	private float health;
-	public float maxHealth = 100;
+	public float health = 100;
 	Animator animator;
+	public float respawnTime = 5;
 
 	public bool IsDead {
 		get { return health <= 0; }
@@ -13,14 +13,20 @@ public class Hittable : MonoBehaviour {
 
 	void Start () {
 		animator = GetComponent<Animator> ();
-		health = maxHealth;
 	}
 
 	public void GetHit(float damage){
 		health -= damage;
 		if (IsDead) {
 			animator.SetTrigger ("Dead");
-			Debug.Log ("Dead");
+			Invoke ("Spawn", respawnTime);
 		}
+	}
+
+	void Spawn(){
+		Debug.Log ("Spawn the player");
+		transform.position = Vector3.zero;
+		health = 100;
+		animator.SetTrigger ("Spawn");
 	}
 }
