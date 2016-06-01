@@ -81,7 +81,7 @@ public class Network : MonoBehaviour
 	{
 		Debug.Log("received attack " + obj.data);
 		var targetPlayer = spawner.GetPlayer(obj.data["targetId"].str);
-		targetPlayer.GetComponent<Hittable> ().GetHit(10f);
+		targetPlayer.GetComponent<Hittable> ().GetHit(20f);
 
 		var attackingPlayer = spawner.GetPlayer(obj.data["id"].str);
 		attackingPlayer.GetComponent<Animator> ().SetTrigger ("Attack");

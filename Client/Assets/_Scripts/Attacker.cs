@@ -13,7 +13,7 @@ public class Attacker : MonoBehaviour {
 	}
 	
 	void Update () {
-		if (isReadyToAttack() && targeter.IsInRange (attackDistance)) {
+		if (isReadyToAttack() && targeter.IsInRange (attackDistance) && !targeter.target.GetComponent<Hittable>().IsDead) {
 			Debug.Log("attacking " + targeter.target.name);
 			var targetId = targeter.target.GetComponent<NetworkEntity> ().id;
 			Network.Attack (targetId);
