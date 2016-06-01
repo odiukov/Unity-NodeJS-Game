@@ -23,5 +23,6 @@ public class Navigator : MonoBehaviour {
 	{
 	    agent.SetDestination(position);
 		targeter.target = null;
+		animator.SetBool ("Attack", false);
 	}
 }
